@@ -1,0 +1,16 @@
+  <input type="text" value="" class="border w-full" onfocus={{action this.handleFocus}} oninput={{action this.handleInput}}>
+  {{#if this.dropdownExpanded}}
+    <ul class="list-reset bg-grey-darkest">
+      {{#if this.searchCustomers.isRunning}}
+        spinner...
+      {{else}}
+        {{#each this.customers as |customer|}}
+          <li class="text-grey-lighter border-t border-grey p-2 hover:bg-black">{{customer.name}}</li>
+        {{else}}
+          <li class="text-grey-lighter border-t border-grey p-2">No results for query</li>
+        {{/each}}
+      {{/if}}
+      <li class="text-grey-lighter p-2 hover:bg-black">Create a new customer</li>
+    </ul>
+  {{/if}}
+  {{yield}}
