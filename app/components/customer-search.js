@@ -14,7 +14,8 @@ export default class CustomerSearchComponent extends Component {
   customers = [];
   selectedIndex = null;
   didSearch = false;
-  query = "";
+  query = '';
+  classNames = [ 'relative' ];
 
   didInsertElement() {
     super.didInsertElement();
@@ -41,7 +42,7 @@ export default class CustomerSearchComponent extends Component {
         if (this.selectedIndex !== null && this.selectedIndex > 0) {
           this.decrementProperty('selectedIndex');
         }
-      } else if (e.keyCode === 13 && this.selectedIndex) {
+      } else if (e.keyCode === 13 && this.selectedIndex !== null) {
         let customer = this.customers[this.selectedIndex];
         this.selectCustomer(customer);
       }
