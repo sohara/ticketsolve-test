@@ -23,6 +23,14 @@ export default Factory.extend({
     return faker.internet.email();
   },
 
+  phone() {
+    return faker.phone.phoneNumber();
+  },
+
+  mobile() {
+    return faker.phone.phoneNumber();
+  },
+
   uuid() {
     return faker.random.uuid();
   },

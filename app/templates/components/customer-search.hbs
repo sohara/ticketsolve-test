@@ -1,14 +1,16 @@
   <input type="text"
     value={{this.query}}
-    class="border w-full py-2 px-3 pl-10"
+    class="block w-full text-grey-darker border border-grey-lighter rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white border w-full py-2 px-3 pl-10"
     placeholder="Assign customer"
     disabled={{this.selectedCustomer}}
     onfocus={{action this.handleFocus}}
     oninput={{action this.handleInput value="target.value"}}>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="absolute pin mx-2 my-1 icon-user w-6"><path class="primary" d="M12 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/><path class="secondary" d="M21 20v-1a5 5 0 0 0-5-5H8a5 5 0 0 0-5 5v1c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="absolute pin mx-2 my-2 icon-user w-6"><path class="primary" d="M12 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/><path class="secondary" d="M21 20v-1a5 5 0 0 0-5-5H8a5 5 0 0 0-5 5v1c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2z"/></svg>
   {{#if this.selectedCustomer}}
-    <div id="selection" class="absolute pin ml-10 px-2 my-1 py-1 bg-white flex justify-between">
-      {{this.selectedCustomer.name}}
+    <div id="selection" class="absolute pin ml-10 p-2 m-1 bg-white flex justify-between font-bold hover:bg-grey-lighter">
+      <span role="button" onclick={{action @onClickSelected selectedCustomer}}>
+        {{this.selectedCustomer.name}}
+      </span>
       <button
         class="-mt-1"
         onclick={{action deselectCustomer}}>
@@ -31,7 +33,7 @@
               role="button"
               >
               <div class="w-full">
-                {{customer.name}} {{index}}
+                {{customer.name}}
               </div>
               <div class="flex text-xs text-grey">
                 <div class="w-1/2">
@@ -48,7 +50,11 @@
             <li class="text-grey-lighter border-t border-grey p-2">No results for query</li>
           {{/if}}
         {{/each}}
-        <li class="text-grey-lighter p-2 hover:bg-black border-t border-grey">Create a new customer</li>
+        <li class="text-grey-lighter p-2 hover:bg-black border-t border-grey"
+          role="button"
+          onclick={{action @onClickNew}}>
+          Create a new customer
+        </li>
       {{/if}}
     </ul>
   {{/if}}

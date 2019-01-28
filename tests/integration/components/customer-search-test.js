@@ -10,21 +10,21 @@ module('Integration | Component | customer-search', function(hooks) {
   hooks.beforeEach(function() {
     this.server = startMirage();
     defaultScenario(this.server);
+    this.set('noOp', () => {});
   });
   hooks.afterEach(function() {
     this.server.shutdown();
   });
 
   test('it expands dropdown when input is focussed', async function(assert) {
-    await render(hbs`<CustomerSearch />`);
-
+    await render(hbs`<CustomerSearch @onClickNew={{action noOp}} @onClickSelected={{action noOp}} />`);
     assert.equal(this.element.textContent.trim(), '', 'dropdown text is not visible');
     await focus('input');
     assert.ok(this.element.textContent.trim().includes('Create a new customer'), 'dropdown text is now visible');
   });
 
   test('it collapses dropdown when DOM outside component is clicked', async function(assert) {
-    await render(hbs`<CustomerSearch /><p id='paragraph1'>Some text</p>`);
+    await render(hbs`<CustomerSearch @onClickNew={{action noOp}} @onClickSelected={{action noOp}} /><p id='paragraph1'>Some text</p>`);
     await focus('input');
     assert.ok(this.element.textContent.trim().includes('Create a new customer'), 'dropdown text is now visible');
     await click('#paragraph1');
@@ -32,14 +32,14 @@ module('Integration | Component | customer-search', function(hooks) {
   });
 
   test('input can be used to search customers', async function(assert) {
-    await render(hbs`<CustomerSearch />`);
+    await render(hbs`<CustomerSearch @onClickNew={{action noOp}} @onClickSelected={{action noOp}} />`);
     await fillIn('input', 'sean');
     assert.ok(this.element.textContent.trim().includes('Sean Hanly'), 'A customer result is rendered');
   });
 
   test('a block can be passed to render customers', async function(assert) {
     await render(hbs`
-    <CustomerSearch as |customer|>
+    <CustomerSearch @onClickNew={{action noOp}} @onClickSelected={{action noOp}} as |customer|>
       Hello {{customer.name}}
     </CustomerSearch>
     `);
@@ -48,7 +48,7 @@ module('Integration | Component | customer-search', function(hooks) {
   });
 
   test('results can be navigated and selected via keyboard', async function(assert) {
-    await render(hbs`<CustomerSearch />`);
+    await render(hbs`<CustomerSearch @onClickNew={{action noOp}} @onClickSelected={{action noOp}} />`);
     await fillIn('input', 'a');
     assert.notOk(find('li').classList.contains('selected'), 'First result is not navigated');
 
