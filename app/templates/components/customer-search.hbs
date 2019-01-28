@@ -1,16 +1,48 @@
-  <input type="text" value="" class="border w-full" onfocus={{action this.handleFocus}} oninput={{action this.handleInput}}>
-  {{#if this.dropdownExpanded}}
+  <input type="text"
+    value={{this.query}}
+    class="border w-full"
+    disabled={{this.selectedCustomer}}
+    onfocus={{action this.handleFocus}}
+    oninput={{action this.handleInput value="target.value"}}>
+  {{#if this.selectedCustomer}}
+    <div id="selection">
+      {{this.selectedCustomer.name}}
+    </div>
+    <button onclick={{action deselectCustomer}}>X</button>
+  {{/if}}
+  {{#if (and this.focussed (not this.selectedCustomer))}}
     <ul class="list-reset bg-grey-darkest">
       {{#if this.searchCustomers.isRunning}}
         spinner...
       {{else}}
-        {{#each this.customers as |customer|}}
-          <li class="text-grey-lighter border-t border-grey p-2 hover:bg-black">{{customer.name}}</li>
+        {{#each this.customers as |customer index|}}
+          {{#if (has-block)}}
+            {{yield customer}}
+          {{else}}
+            <li
+              class="text-grey-lighter border-t border-grey p-2 hover:bg-black {{if (eq index this.selectedIndex) "bg-black selected"}}"
+              onclick={{action this.selectCustomer customer}}
+              role="button"
+              >
+              <div class="w-full">
+                {{customer.name}} {{index}}
+              </div>
+              <div class="flex text-xs text-grey">
+                <div class="w-1/2">
+                  {{customer.email}}
+                </div>
+                <div class="w-1/2 text-right">
+                  {{customer.uuid}}
+                </div>
+              </div>
+            </li>
+          {{/if}}
         {{else}}
-          <li class="text-grey-lighter border-t border-grey p-2">No results for query</li>
+          {{#if this.didSearch}}
+            <li class="text-grey-lighter border-t border-grey p-2">No results for query</li>
+          {{/if}}
         {{/each}}
+        <li class="text-grey-lighter p-2 hover:bg-black border-t border-grey">Create a new customer</li>
       {{/if}}
-      <li class="text-grey-lighter p-2 hover:bg-black">Create a new customer</li>
     </ul>
   {{/if}}
-  {{yield}}

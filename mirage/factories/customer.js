@@ -19,9 +19,13 @@ export default Factory.extend({
     return NAMES[i];
   },
 
-  age: 28,
+  email() {
+    return faker.internet.email();
+  },
 
-  admin: false,
+  uuid() {
+    return faker.random.uuid();
+  },
 
   avatar() {
     return faker.internet.avatar();
