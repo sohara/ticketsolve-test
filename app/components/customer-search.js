@@ -1,14 +1,37 @@
 import Component from '@ember/component';
 import { action } from '@ember-decorators/object';
 import { inject as service } from '@ember-decorators/service';
-import { task } from 'ember-concurrency-decorators';
+import { task } from 'ember-concurrency';
 import { timeout } from 'ember-concurrency';
 import { isBlank } from '@ember/utils';
 import { later } from '@ember/runloop';
+import Ember from 'ember';
 
 const DEBOUNCE_MS = Ember.testing ? 0 : 250;
 
-export default class CustomerSearchComponent extends Component {
+export default class CustomerSearchComponent extends Component.extend({
+  searchCustomers: task(function * (query) {
+    if (isBlank(query)) {
+      this.get('customers').clear();
+      this.set('didSearch', false);
+      return;
+    }
+    // Debounce
+    yield timeout(DEBOUNCE_MS);
+
+    let result = yield this.ajax.request('/api/customers', {
+      data: {
+        filter: query
+      }
+
+    })
+    let customers = result.data.map(customer => customer.attributes);
+    this.set('didSearch', true);
+    this.set('selectedIndex', null);
+    this.get('customers').setObjects(customers);
+  }).restartable()
+
+}) {
   @service ajax;
 
   customers = [];
@@ -83,27 +106,7 @@ export default class CustomerSearchComponent extends Component {
     this.set('focussed', true);
   }
 
-  @task({ restartable: true })
-  *searchCustomers(query) {
-    if (isBlank(query)) {
-      this.get('customers').clear();
-      this.set('didSearch', false);
-      return;
-    }
-    // Debounce
-    yield timeout(DEBOUNCE_MS);
 
-    let result = yield this.ajax.request('/api/customers', {
-      data: {
-        filter: query
-      }
-
-    })
-    let customers = result.data.map(customer => customer.attributes);
-    this.set('didSearch', true);
-    this.set('selectedIndex', null);
-    this.get('customers').setObjects(customers);
-  }
 
   @action
   handleInput(value) {
