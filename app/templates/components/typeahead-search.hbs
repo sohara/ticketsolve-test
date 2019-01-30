@@ -1,53 +1,5 @@
-<input type="text"
-  value={{this.query}}
-  class="block w-full text-grey-darker border border-grey-lighter rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white border w-full py-2 px-3 pl-10"
-  placeholder="Assign customer"
-  disabled={{this.selectedResult}}
-  onfocus={{action this.handleFocus}}
-  oninput={{perform this.handleSearch value="target.value"}}>
-  {{#if this.selectedResult}}
-    <div id="selection" class="absolute pin ml-10 p-2 m-1 bg-white flex justify-between font-bold hover:bg-grey-lighter">
-      <span role="button" onclick={{action @onClickSelected selectedResult}}>
-        {{#if @selectedDisplayProp}}
-          {{get this.selectedResult @selectedDisplayProp}}
-        {{else}}
-          {{this.selectedResult}}
-        {{/if}}
-      </span>
-      <button
-        class="-mt-1"
-        onclick={{action deselectResult}}>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 icon-close-square"><rect width="18" height="18" x="3" y="3" class="primary" rx="2"></rect><path class="secondary" d="M13.41 12l2.83 2.83a1 1 0 0 1-1.41 1.41L12 13.41l-2.83 2.83a1 1 0 1 1-1.41-1.41L10.59 12 7.76 9.17a1 1 0 0 1 1.41-1.41L12 10.59l2.83-2.83a1 1 0 0 1 1.41 1.41L13.41 12z"></path></svg>
-      </button>
-    </div>
-  {{/if}}
-  {{#if (and this.focussed (not this.selectedResult))}}
-    <ul class="list-reset bg-grey-darkest">
-      {{#if this.handleSearch.isRunning}}
-        <div class="p-2 spinner"></div>
-      {{else}}
-        {{#each this.results as |result index|}}
-          {{#if (has-block)}}
-            {{yield result this.selectedIndex this.selectResult index}}
-          {{else}}
-            <li class="text-grey-lighter border-t border-grey p-2 hover:bg-black {{if (eq index this.selectedIndex) "bg-black selected"}}" >
-              <div class="w-full">
-                {{result}}
-              </div>
-            </li>
-          {{/if}}
-        {{else}}
-          {{#if this.didSearch}}
-            <li class="text-grey-lighter border-t border-grey p-2">No results for query</li>
-          {{/if}}
-        {{/each}}
-        {{#if @newItemPrompt}}
-          <li class="text-grey-lighter p-2 hover:bg-black border-t border-grey"
-            role="button"
-            onclick={{action @onClickNew}}>
-            {{@newItemPrompt}}
-          </li>
-        {{/if}}
-      {{/if}}
-    </ul>
-  {{/if}}
+{{yield (hash
+  input=(component "typeahead-search-input" handleFocus=this.handleFocus handleSearch=this.handleSearch selectedResult=this.selectedResult)
+  results=(component "typeahead-search-results" didSearch=this.didSearch handleSearch=this.handleSearch focussed=this.focussed selectResult=this.selectResult results=this.results selectedIndex=this.selectedIndex)
+  selection=(component "typeahead-search-selection" selectedResult=this.selectedResult deselectResult=this.deselectResult)
+)}}

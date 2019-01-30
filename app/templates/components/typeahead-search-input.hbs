@@ -1,0 +1,7 @@
+<input type="text"
+  value={{this.query}}
+  placeholder="Assign customer"
+  class={{@classNames}}
+  disabled={{@selectedResult}}
+  onfocus={{action @handleFocus}}
+  oninput={{perform @handleSearch value="target.value"}}>
