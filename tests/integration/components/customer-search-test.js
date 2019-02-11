@@ -28,7 +28,7 @@ module('Integration | Component | customer-search', function(hooks) {
 
     await triggerKeyEvent('input', 'keydown', 13);
     assert.notOk(find('ul'), 'Results list is no longer rendered');
-    assert.equal(find('#selection').textContent.trim(), ('Sean Hanly'), 'Correct result is selected');
+    assert.equal(find('.typeahead-search-selection').textContent.trim(), ('Sean Hanly'), 'Correct result is selected');
   });
 
 });

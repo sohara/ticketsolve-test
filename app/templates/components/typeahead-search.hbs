@@ -1,5 +1,42 @@
-{{yield (hash
-  input=(component "typeahead-search-input" handleFocus=this.handleFocus handleSearch=this.handleSearch selectedResult=this.selectedResult)
-  results=(component "typeahead-search-results" didSearch=this.didSearch handleSearch=this.handleSearch focussed=this.focussed selectResult=this.selectResult results=this.results selectedIndex=this.selectedIndex)
-  selection=(component "typeahead-search-selection" selectedResult=this.selectedResult deselectResult=this.deselectResult)
-)}}
+{{#if (has-block)}}
+  {{yield (hash
+    input=(component "typeahead-search-input"
+      handleFocus=this.handleFocus
+      handleSearch=this.handleSearch
+      selectedResult=this.selectedResult
+    )
+    results=(component "typeahead-search-results"
+      didSearch=this.didSearch
+      handleSearch=this.handleSearch
+      focussed=this.focussed
+      selectResult=this.selectResult
+      results=this.results
+      selectedIndex=this.selectedIndex
+      selectedResult=this.selectedResult
+      newItemPrompt=this.newItemPrompt
+    )
+    selection=(component "typeahead-search-selection"
+      selectedResult=this.selectedResult
+      deselectResult=this.deselectResult
+    )
+  )}}
+{{else}}
+  <TypeaheadSearchInput
+    @handleFocus={{this.handleFocus}}
+    @handleSearch={{this.handleSearch}} />
+  <TypeaheadSearchSelection
+    @selectedResult={{this.selectedResult}}
+    @deselectResult={{this.deselectResult}} />
+  <TypeaheadSearchResults
+    @didSearch={{this.didSearch}}
+    @handleSearch={{this.handleSearch}}
+    @focussed={{this.focussed}}
+    @selectResult={{this.selectResult}}
+    @results={{this.results}}
+    @selectedIndex={{this.selectedIndex}}
+    @onClickNew={{this.onClickNew}}
+    @selectedResult={{this.selectedResult}}
+    @newItemPrompt={{this.newItemPrompt}} as |result|>
+    {{result}}
+  </TypeaheadSearchResults>
+{{/if}}

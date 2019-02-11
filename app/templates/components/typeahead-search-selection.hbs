@@ -1,7 +1,11 @@
 {{#if @selectedResult}}
-  <div id="selection" class="absolute pin ml-10 p-2 m-1 bg-white flex justify-between font-bold hover:bg-grey-lighter">
+  <div class="typeahead-search-selection absolute pin ml-10 p-2 m-1 bg-white flex justify-between font-bold hover:bg-grey-lighter">
     <span role="button" onclick={{action "handleClickSelection" @selectedResult}}>
-      {{yield @selectedResult}}
+      {{#if (has-block)}}
+        {{yield @selectedResult}}
+      {{else}}
+        {{@selectedResult}}
+      {{/if}}
     </span>
     <button
       class="-mt-1"
