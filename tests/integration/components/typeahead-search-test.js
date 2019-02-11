@@ -118,4 +118,31 @@ module('Integration | Component | typeahead-search', function(hooks) {
     assert.equal(find('.typeahead-search-selection').textContent.trim(), ('Moe'), 'Correct result is selected');
   });
 
+  test('selected result can be cleared, leaving typeahed in empty state', async function(assert) {
+    let search = () => {
+      return EmberPromise.resolve(PEOPLE);
+    };
+    this.set('search', search);
+    await render(hbs`
+      <TypeaheadSearch
+        @onClickNew={{action noOp}}
+        @onClickSelected={{action noOp}}
+        @newItemPrompt="Create a new customer"
+        @search={{action this.search}} />
+    `);
+    await fillIn('input', 'lar');
+
+    // ArrowDown to select first result
+    await triggerKeyEvent('input', 'keydown', 40);
+    assert.ok(find('li').classList.contains('selected'), 'First result is navigated');
+
+    // Enter to select item
+    await triggerKeyEvent('input', 'keydown', 13);
+    assert.notOk(find('ul'), 'Results list is no longer rendered');
+    assert.equal(find('.typeahead-search-selection').textContent.trim(), ('Larry'), 'Correct result is selected');
+
+    await click('.typeahead-search-selection button.close');
+    assert.equal(find('input').value, '', 'previous input entry cleared');
+  });
+
 });

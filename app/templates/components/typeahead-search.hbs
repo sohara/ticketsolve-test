@@ -1,6 +1,7 @@
 {{#if (has-block)}}
   {{yield (hash
     input=(component "typeahead-search-input"
+      query=this.query
       handleFocus=this.handleFocus
       handleSearch=this.handleSearch
       selectedResult=this.selectedResult
@@ -22,6 +23,7 @@
   )}}
 {{else}}
   <TypeaheadSearchInput
+    @query={{this.query}}
     @handleFocus={{this.handleFocus}}
     @handleSearch={{this.handleSearch}} />
   <TypeaheadSearchSelection
