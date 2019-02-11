@@ -1,0 +1,27 @@
+{{#if (and @focussed (not @selectedResult))}}
+  <ul class={{@classNames}}>
+    {{#if @handleSearch.isRunning}}
+      <div class="p-2 spinner"></div>
+    {{else}}
+      {{#each @results as |result index|}}
+        <li class="text-grey-lighter border-t border-grey p-2 hover:bg-black {{if (eq index this.selectedIndex) "bg-black selected"}}"
+          onclick={{action @selectResult result}}
+          role="button"
+        >
+          {{yield result}}
+        </li>
+      {{else}}
+        {{#if @didSearch}}
+          <li class="text-grey-lighter border-t border-grey p-2">No results for query</li>
+        {{/if}}
+      {{/each}}
+      {{#if @newItemPrompt}}
+        <li class="text-grey-lighter p-2 hover:bg-black border-t border-grey"
+          role="button"
+          onclick={{action @onClickNew}}>
+          {{@newItemPrompt}}
+        </li>
+      {{/if}}
+    {{/if}}
+  </ul>
+{{/if}}
