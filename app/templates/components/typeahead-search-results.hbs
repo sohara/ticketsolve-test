@@ -1,5 +1,7 @@
 {{#if (and @focussed (not @selectedResult))}}
-  <ul class={{@classNames}}>
+  {{! template-lint-disable no-inline-styles }}
+  {{! template-lint-disable style-concatenation }}
+  <ul class={{@classNames}} style={{concat "width:" this.listWidth "px"}}>
     {{#if @handleSearch.isRunning}}
       <div class="p-2 spinner"></div>
     {{else}}

@@ -82,6 +82,9 @@ export default class TypeaheadSearchComponent extends Component.extend({
   }
 
   @action deselectResult() {
+    if (this.onDeselectOption) {
+      this.onDeselectOption();
+    }
     this.set('selectedResult', null);
     this.clearState();
     later(() => {
