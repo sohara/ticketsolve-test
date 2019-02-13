@@ -27,7 +27,7 @@ export default class ApplicationController extends Controller {
 
   @action
   createCustomer() {
-    this.set('customer', Object.assign({}, NEW_CUSTOMER));
+    this.set('editCustomer', Object.assign({}, NEW_CUSTOMER));
   }
 
   @action

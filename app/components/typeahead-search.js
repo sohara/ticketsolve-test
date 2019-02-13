@@ -76,6 +76,15 @@ export default class TypeaheadSearchComponent extends Component.extend({
   }
 
   @action
+  addNewItem() {
+    if (this.onClickNew) {
+      this.onClickNew();
+      this.clearState();
+      this.set('focussed', false);
+    }
+  }
+
+  @action
   selectResult(result) {
     this.set('selectedResult', result);
     this.clearState();

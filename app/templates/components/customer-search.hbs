@@ -1,5 +1,6 @@
 <TypeaheadSearch @search={{action search}}
   @onDeselectOption={{@onDeselectCustomer}}
+  @onClickNew={{@onClickNew}}
   as |t|>
   <t.input @classNames="block w-full text-grey-darker border border-grey-lighter rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white border w-full py-2 px-3 pl-10" />
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="absolute pin mx-2 my-2 icon-user w-6"><path class="primary" d="M12 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/><path class="secondary" d="M21 20v-1a5 5 0 0 0-5-5H8a5 5 0 0 0-5 5v1c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2z"/></svg>
@@ -9,7 +10,6 @@
   <t.results @classNames="list-reset bg-grey-darkest"
     @itemClassNames=""
     @newItemPrompt="Create a new customer"
-    @onClickNew={{@onClickNew}}
     as |customer|>
     <div class="w-full">
       {{customer.name}}
