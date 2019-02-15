@@ -26,29 +26,23 @@
   </form>
 
   {{#if this.editCustomer}}
-    <form
-      onsubmit={{action this.submitEdit}}
-      class="w-full border boder-grey-lighter rounded p-4">
+    <h3>customer name: {{editCustomer.name}}</h3>
+    <UiForm
+      @classNames="w-full border boder-grey-lighter rounded p-4"
+      @model={{this.editCustomer}}
+      @onsubmit={{action this.submitEdit}}
+      as |f|>
       <h2 class="border-b mb-4 border-grey-lighter">Customer Details</h2>
       <div class="flex flex-wrap -mx-3 mb-6">
-        <TextField @label="Name" @value={{this.editCustomer.name}} @placeholder="Jane Doe" />
-        <TextField @label="Email" @value={{this.editCustomer.email}} @placeholder="jane@example.com" />
-        <TextField @label="Phone" @value={{this.editCustomer.phone}} @placeholder="232 343 3423" />
-        <TextField @label="Mobile" @value={{this.editCustomer.mobile}} @placeholder="232 343 3423" />
+        <f.input @field="name" @label="Name" @placeholder="Jane Doe" />
+        <f.input @field="email" @label="Email" @placeholder="jane@example.com" />
+        <f.input @field="phone" @label="Phone" @placeholder="2323 2324 2323" />
+        <f.input @field="mobile" @label="Mobile" @placeholder="2323 2324 2323" />
         <div class="w-full px-3 mb-6 text-right">
-          <button
-            onclick={{action this.cancelEdit}}
-            class="bg-transparent text-blue-dark hover:bg-blue-dark hover:text-white font-bold py-2 px-4 rounded-full border border-blue">
-            Cancel
-          </button>
-          <button
-            type="submit"
-            class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-full">
-            Submit
-          </button>
+          <f.submitButton />
+          <f.cancelButton @onclick={{action this.cancelEdit}} />
         </div>
-
       </div>
-    </form>
+    </UiForm>
   {{/if}}
 </div>

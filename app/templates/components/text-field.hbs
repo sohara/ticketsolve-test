@@ -2,8 +2,10 @@
   <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-first-name">
     {{@label}}
   </label>
-  <input class="block w-full  text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-    value={{@value}}
-    oninput={{action (mut @value) value="target.value"}}
-    id={{@label}} type="text" placeholder={{@placeholder}}>
+  {{#let (get @model @field) as |value|}}
+    <input class="block w-full  text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+       value={{value}}
+      oninput={{action (mut value) value="target.value"}}
+      id={{@label}} type="text" placeholder={{@placeholder}}>
+  {{/let}}
 </div>
