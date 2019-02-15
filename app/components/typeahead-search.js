@@ -12,7 +12,6 @@ export default class TypeaheadSearchComponent extends Component.extend({
   handleSearch: task(function * (query) {
     this.set('query', query);
     if (isBlank(query)) {
-      this.get('results').clear();
       this.set('didSearch', false);
       return;
     }
@@ -20,10 +19,9 @@ export default class TypeaheadSearchComponent extends Component.extend({
     // Debounce
     yield timeout(DEBOUNCE_MS);
 
-    let results = yield this.search(query);
+    yield this.search(query);
     this.set('didSearch', true);
     this.set('selectedIndex', null);
-    this.get('results').setObjects(results);
   }).restartable()
 }) {
   focussed = false;
@@ -86,11 +84,14 @@ export default class TypeaheadSearchComponent extends Component.extend({
 
   @action
   selectResult(result) {
-    this.set('selectedResult', result);
+    if (this.onSelectResult) {
+      this.onSelectResult(result);
+    }
     this.clearState();
   }
 
-  @action deselectResult() {
+  @action deselectResult(e) {
+    e.preventDefault();
     if (this.onDeselectOption) {
       this.onDeselectOption();
     }

@@ -10,9 +10,13 @@ module('Integration | Component | typeahead-search', function(hooks) {
 
   hooks.beforeEach(function() {
     this.set('noOp', () => {});
+    this.set('results', []);
     let search = (query) => {
       let regex = new RegExp(query, 'i');
-      return EmberPromise.resolve(PEOPLE.filter(name => name.match(regex)));
+      return new EmberPromise(resolve => {
+        this.results.setObjects(PEOPLE.filter(name => name.match(regex)));
+        resolve();
+      });
     };
     this.set('search', search);
   });
@@ -48,13 +52,14 @@ module('Integration | Component | typeahead-search', function(hooks) {
   });
 
   test('input can be used to search for results with search action', async function(assert) {
-    await render(hbs`<CustomerSearch @onClickNew={{action noOp}} @onClickSelected={{action noOp}} />`);
     await render(hbs`
       <TypeaheadSearch
         @onClickNew={{action noOp}}
         @onClickSelected={{action noOp}}
         @newItemPrompt="Create a new customer"
         @search={{action search}}
+        @results={{this.results}}
+        @onSelectResult={{action noOp}}
         />
     `);
     await fillIn('input', 'lar');
@@ -64,14 +69,16 @@ module('Integration | Component | typeahead-search', function(hooks) {
   test('it can be used with block invocation of contextual components to render search results', async function(assert) {
     let search = (query) => {
       let regex = new RegExp(query, 'i');
-      return EmberPromise.resolve(PEOPLE
-        .filter(person => person.match(regex))
-        .map(name => { return { name, profession: 'Stooge' }; })
-      );
+      return new EmberPromise(resolve => {
+        this.results.setObjects(PEOPLE.filter(name => name.match(regex))
+          .map(name => { return { name, profession: 'Stooge' }; }));
+        resolve();
+      });
     };
     this.set('search', search);
     await render(hbs`
       <TypeaheadSearch
+        @results={{this.results}}
         @search={{action this.search}} as |t|>
         <t.input />
         <t.results
@@ -88,14 +95,21 @@ module('Integration | Component | typeahead-search', function(hooks) {
 
   test('results can be navigated and selected via keyboard', async function(assert) {
     let search = () => {
-      return EmberPromise.resolve(PEOPLE);
+      return new EmberPromise(resolve => {
+        this.results.setObjects(PEOPLE);
+        resolve();
+      });
     };
     this.set('search', search);
+    this.set('selectedResult', null)
     await render(hbs`
       <TypeaheadSearch
+        @results={{this.results}}
         @onClickNew={{action noOp}}
         @onClickSelected={{action noOp}}
         @newItemPrompt="Create a new customer"
+        @onSelectResult={{action (mut this.selectedResult)}}
+        @selectedResult={{this.selectedResult}}
         @search={{action this.search}} />
     `);
     await fillIn('input', 'lar');
@@ -120,13 +134,20 @@ module('Integration | Component | typeahead-search', function(hooks) {
 
   test('selected result can be cleared, leaving typeahed in empty state', async function(assert) {
     let search = () => {
-      return EmberPromise.resolve(PEOPLE);
+      return new EmberPromise(resolve => {
+        this.results.setObjects(PEOPLE);
+        resolve();
+      });
     };
     this.set('search', search);
+    this.set('selectedResult', null)
     await render(hbs`
       <TypeaheadSearch
+        @results={{this.results}}
         @onClickNew={{action noOp}}
         @onClickSelected={{action noOp}}
+        @onSelectResult={{action (mut this.selectedResult)}}
+        @selectedResult={{this.selectedResult}}
         @newItemPrompt="Create a new customer"
         @search={{action this.search}} />
     `);

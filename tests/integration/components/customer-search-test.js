@@ -1,23 +1,39 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { fillIn, find, render, triggerKeyEvent } from '@ember/test-helpers';
+import { Promise as EmberPromise } from 'rsvp';
 import hbs from 'htmlbars-inline-precompile';
-import { startMirage } from 'ticketsolve/initializers/ember-cli-mirage';
-import defaultScenario from '../../../mirage/scenarios/default';
 
 module('Integration | Component | customer-search', function(hooks) {
   setupRenderingTest(hooks);
   hooks.beforeEach(function() {
-    this.server = startMirage();
-    defaultScenario(this.server);
+    let search = () => {
+
+      return new EmberPromise(resolve => {
+        this.customers.setObjects([
+           { name: 'Jack Seamus' },
+           { name: 'Zoe Brillante' },
+           { name: 'Sean Hanly' }
+          ]);
+        resolve(true);
+      });
+    };
+    this.set('customers', []);
+    this.set('selectedCustomer', null);
+    this.set('search', search);
     this.set('noOp', () => {});
-  });
-  hooks.afterEach(function() {
-    this.server.shutdown();
   });
 
   test('it can be used to search and select customers', async function(assert) {
-    await render(hbs`<CustomerSearch @onClickNew={{action noOp}} @onClickSelected={{action noOp}} />`);
+    await render(hbs`
+      <CustomerSearch
+        @search={{action search}}
+        @customers={{this.customers}}
+        @selectedCustomer={{this.selectedCustomer}}
+        @onSelectResult={{action (mut this.selectedCustomer)}}
+        @onClickNew={{action noOp}}
+        @onClickSelected={{action noOp}}
+        />`);
     await fillIn('input', 'sean');
     assert.ok(this.element.textContent.trim().includes('Sean Hanly'), 'A customer result is rendered');
 
