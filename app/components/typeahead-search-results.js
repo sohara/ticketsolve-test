@@ -5,6 +5,7 @@ export default class TypeaheadSearchResultsComponent extends Component {
   classNames = ['fixed'];
   listWidth = null;
 
+
   @action
   handleResize() {
     let timeout;

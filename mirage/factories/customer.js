@@ -15,6 +15,10 @@ const NAMES = [
 ]
 
 export default Factory.extend({
+  id(i) {
+    return i;
+  },
+
   name(i) {
     return NAMES[i];
   },

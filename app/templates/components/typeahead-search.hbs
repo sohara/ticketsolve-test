@@ -15,6 +15,7 @@
       selectedIndex=this.selectedIndex
       selectedResult=this.selectedResult
       newItemPrompt=this.newItemPrompt
+      addNewItem=this.addNewItem
     )
     selection=(component "typeahead-search-selection"
       selectedResult=this.selectedResult
@@ -36,7 +37,7 @@
     @selectResult={{this.selectResult}}
     @results={{this.results}}
     @selectedIndex={{this.selectedIndex}}
-    @onClickNew={{this.onClickNew}}
+    @addNewItem={{this.addNewItem}}
     @selectedResult={{this.selectedResult}}
     @newItemPrompt={{this.newItemPrompt}} as |result|>
     {{result}}
