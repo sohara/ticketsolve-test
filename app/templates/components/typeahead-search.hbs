@@ -12,6 +12,7 @@
       focussed=this.focussed
       selectResult=this.selectResult
       results=this.results
+      query=this.query
       selectedIndex=this.selectedIndex
       selectedResult=this.selectedResult
       newItemPrompt=this.newItemPrompt
@@ -21,6 +22,7 @@
       selectedResult=this.selectedResult
       deselectResult=this.deselectResult
     )
+    query=this.query
   )}}
 {{else}}
   <TypeaheadSearchInput
@@ -36,6 +38,7 @@
     @focussed={{this.focussed}}
     @selectResult={{this.selectResult}}
     @results={{this.results}}
+    @query={{this.query}}
     @selectedIndex={{this.selectedIndex}}
     @addNewItem={{this.addNewItem}}
     @selectedResult={{this.selectedResult}}
