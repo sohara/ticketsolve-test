@@ -1,0 +1,7 @@
+<form onsubmit={{this.onsubmit}} class={{@classNames}}>
+  {{yield (hash
+  input=(component "text-field" model=@model)
+  submitButton=(component "ui-submit-button")
+  cancelButton=(component "ui-cancel-button")
+  )}}
+</form>
