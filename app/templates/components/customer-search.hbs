@@ -15,7 +15,7 @@
     @newItemPrompt="Create a new customer"
     as |customer|>
     <div class="w-full">
-      {{customer.name}}
+      {{highlight-substring customer.name t.query 'bg-black'}}
     </div>
     <div class="flex text-xs text-grey">
       <div class="w-1/2">
